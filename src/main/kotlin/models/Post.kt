@@ -1,7 +1,6 @@
 package models
 
-import attachments.Attachment
-import java.time.LocalDate
+import attachments.AttachmentAudio
 import java.time.LocalDateTime
 
 data class Post(
@@ -19,5 +18,5 @@ data class Post(
     var isPinned: Boolean = false,
     var markedAsAds: Boolean = false,
     var isFavorite: Boolean = false,
-    var attachment: List<Attachment> = emptyList() // вариант с хэшкодом
+    var attachment: List<AttachmentAudio> = emptyList() // вариант с хэшкодом
 )

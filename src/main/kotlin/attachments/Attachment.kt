@@ -2,76 +2,54 @@ package attachments
 
 import java.time.LocalDateTime
 
-abstract class Attachment(
-    val id: Int,
-    val title: String,
-    val type: String,
-    val date: LocalDateTime
-)
+sealed class Attachment(val type: String)
 
-class AttachmentPhoto(
-    id: Int,
-    title: String,
-    val photoData: Photo,
-    date: LocalDateTime
-) : Attachment(id, title, "Photo", date)
-
+class AttachmentPhoto(val photoData: Photo) : Attachment("Photo")
 data class Photo(
     val id: Int,
     val title: String,
-    val URL: String
+    val url: String,
+    val date: LocalDateTime
 )
 
-class AttachmentVideo(
-    id: Int,
-    title: String,
-    val videoData: Video,
-    date: LocalDateTime
-) : Attachment(id, title, "Video", date)
-
+class AttachmentVideo(val videoData: Video) : Attachment("Video")
 data class Video(
     val id: Int,
     val title: String,
-    val URL: String
+    val url: String,
+    val date: LocalDateTime
 )
 
-class AttachmentAudio(
-    id: Int,
-    title: String,
-    val audioData: Audio,
-    date: LocalDateTime
-) : Attachment(id, title, "Audio", date)
-
+class AttachmentAudio(val audioData: Audio) : Attachment("Audio")
 data class Audio(
     val id: Int,
     val title: String,
-    val URL: String
+    val url: String,
+    val date: LocalDateTime
 )
 
-class AttachmentDocument(
-    id: Int,
-    title: String,
-    val documentData: Document,
-    date: LocalDateTime
-) : Attachment(id, title, "Document", date)
-
+class AttachmentDocument(val documentData: Document) : Attachment("Document")
 data class Document(
     val id: Int,
     val title: String,
-    val URL: String,
-    val size: Long
+    val url: String,
+    val date: LocalDateTime
 )
 
-class AttachmentLink(
-    id: Int,
-    title: String,
-    val linkData: Link,
-    date: LocalDateTime
-) : Attachment(id, title, "Link", date)
-
+class AttachmentLink(val linkData: Link) : Attachment("Link")
 data class Link(
     val id: Int,
     val title: String,
-    val URL: String,
-    val description: String
+    val url: String,
+    val date: LocalDateTime
 )
+
+fun getTypeAttachment(attachment: Attachment): String {
+    return when (attachment) {
+        is AttachmentPhoto -> "Photo"
+        is AttachmentVideo -> "Video"
+        is AttachmentAudio -> "Audio"
+        is AttachmentDocument -> "Document"
+        is AttachmentLink -> "Link"
+    }
+}
