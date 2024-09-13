@@ -1,9 +1,8 @@
 package models
 
 data class Comments(
-    val count: Int = 0,
-    val canPost: Boolean,
-    val groupsCanPost: Boolean,
-    val canClose: Boolean,
-    val canOpen: Boolean
+    val id: Int,
+    val ownerID: Int,
+    val text: String,
+    var reports: MutableList<CommentReport> = mutableListOf()
 )
