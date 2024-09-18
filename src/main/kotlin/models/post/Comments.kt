@@ -1,4 +1,4 @@
-package models
+package models.post
 
 data class Comments(
     val id: Int,

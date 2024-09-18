@@ -1,4 +1,4 @@
-package models
+package models.post
 
 data class CommentReport(
     val ownerId: Int,

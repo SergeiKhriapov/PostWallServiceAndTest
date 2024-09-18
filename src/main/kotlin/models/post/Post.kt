@@ -1,7 +1,6 @@
-package models
+package models.post
 
 import attachments.Attachment
-import attachments.AttachmentAudio
 import java.time.LocalDateTime
 
 data class Post(
@@ -18,7 +17,7 @@ data class Post(
     var isPinned: Boolean = false,
     var markedAsAds: Boolean = false,
     var isFavorite: Boolean = false,
-    var comments: List<Comments> = emptyList(),
-    var attachment: List<Attachment> = emptyList() // вариант с хэшкодом
+    var comments: MutableList<Comments> = mutableListOf(),
+    var attachment: MutableList<Attachment> = mutableListOf() // вариант с хэшкодом
 
 )

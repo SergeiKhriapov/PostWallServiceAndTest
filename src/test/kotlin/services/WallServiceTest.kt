@@ -1,12 +1,11 @@
 package services
 
 import attachments.*
-import exceptions.CommentNotFoundException
-import exceptions.InvalidReportException
-import exceptions.PostNotFoundException
-import models.CommentReport
-import models.Comments
-import models.Post
+import exceptions.post.CommentNotFoundException
+import exceptions.post.InvalidReportException
+import models.post.CommentReport
+import models.post.Comments
+import models.post.Post
 import org.junit.Test
 import org.junit.Assert.*
 import org.junit.Before
@@ -92,7 +91,7 @@ class WallServiceTest {
                 text = "Тестирование вложений",
                 replyOwnerId = 1,
                 replyPostId = 1,
-                attachment = listOf(audioAttachmentOne, audioAttachmentTwo)
+                attachment = mutableListOf(audioAttachmentOne, audioAttachmentTwo)
             )
         )
         assertNotEquals(0, post.id)

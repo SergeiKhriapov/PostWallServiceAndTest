@@ -1,16 +1,14 @@
 package services
 
-import exceptions.CommentNotFoundException
-import exceptions.InvalidReportException
-import exceptions.PostNotFoundException
-import models.CommentReport
-import models.Comments
-import models.Post
+import exceptions.post.CommentNotFoundException
+import exceptions.post.InvalidReportException
+import exceptions.post.PostNotFoundException
+import models.post.CommentReport
+import models.post.Comments
+import models.post.Post
 
 object WallService {
-    private var posts = emptyArray<Post>()
-
-    //    private var comments = emptyArray<Comments>()
+    private var posts = mutableListOf<Post>()
     private var nextIdPost = 1
     private var nextIdComment = 1
     private var nextReportId = 1
@@ -37,8 +35,7 @@ object WallService {
     }
 
     fun clear() {
-        posts = emptyArray()
-//        comments = emptyArray<Comments>()
+        posts.clear()
         nextIdPost = 1
         nextIdComment = 1
         nextReportId = 1
@@ -52,7 +49,10 @@ object WallService {
         }
         val post = posts[postIndex]
         val commentWithId = comment.copy(id = nextIdComment++)
-        val updatedPost = post.copy(comments = post.comments + commentWithId)
+        val updatedComments = post.comments.toMutableList().apply {
+            add(commentWithId)
+        }
+        val updatedPost = post.copy(comments = updatedComments)
         posts[postIndex] = updatedPost
         return commentWithId
     }
