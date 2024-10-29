@@ -23,19 +23,19 @@ object ChatService {
     fun deleteChat(chatId: Int) {
         val chat = chats.find { it.id == chatId }
             ?: throw ChatNotFoundException("Чат с id $chatId не найден")
-        chats.remove(chat)
+        chat.isDeleted = true
     }
 
-    fun getChats(): List<Chat> = chats
+    fun getChats(): List<Chat> = chats.filter { !it.isDeleted }
 
-    fun getUnreadChatsCount(): Int = chats.count { it.unreadMessagesCount > 0 }
+    fun getUnreadChatsCount(): Int = chats.count { it.unreadMessagesCount > 0 && !it.isDeleted }
 
     fun getMessagesFromChat(chatId: Int, count: Int): List<Message> {
         val chat = chats.find { it.id == chatId }
             ?: throw ChatNotFoundException("Чат с id $chatId не найден")
-        // Помечаем все сообщения как прочитанные
+
         chat.messages.forEach { it.isRead = true }
-        return chat.messages.takeLast(count)
+        return chat.messages.filter { !it.isDeleted }.takeLast(count)
             .ifEmpty { listOf(Message(id = 0, chatId = chatId, text = "Нет сообщений")) }
     }
 
@@ -53,14 +53,24 @@ object ChatService {
 
         val message = chat.messages.find { it.id == messageId }
             ?: throw MessageNotFoundException("Сообщение с id $messageId не найдено в чате с id $chatId")
-        chat.messages.remove(message)
+
+        message.isDeleted = true
     }
+
     fun updateMessage(chatId: Int, messageId: Int, newText: String) {
         val chat = chats.find { it.id == chatId }
             ?: throw ChatNotFoundException("Чат с id $chatId не найден")
 
         val message = chat.messages.find { it.id == messageId }
             ?: throw MessageNotFoundException("Сообщение с id $messageId не найдено в чате с id $chatId")
+
         message.text = newText
+    }
+
+    fun getLastMessagesFromChats(): List<String> {
+        return chats.map { chat ->
+            val lastMessage = chat.messages.lastOrNull { !it.isDeleted }
+            lastMessage?.text ?: "нет сообщений"
+        }
     }
 }
